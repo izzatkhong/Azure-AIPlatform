@@ -1,0 +1,88 @@
+﻿@model CognitiveSearch.Web.Models.SearchViewModel
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<!-- Pass controller data to view -->
+<script>
+    q = @Html.Raw(Json.Serialize(Model.Query));
+    searchId = @Html.Raw(Json.Serialize(Model.SearchId));
+    applicationInstrumentationKey = @Html.Raw(Json.Serialize(Model.AppConfig.AppInsights.InstrumentationKey));
+
+    
+</script>
+
+@await Html.PartialAsync("_SideBar", Model)
+@await Html.PartialAsync("_FacetSettings")
+
+<main role="main">
+    <div id="search-results">
+        <div id="search-input-group" class="inputWithIcon">
+            <input type="text" class="form-control" name="q" id="q" placeholder="Search" aria-label="Enter search query..." aria-describedby="btn-search">
+            <i aria-hidden="true"></i>
+        </div>
+        @*<div id="search-input-group" class="input-group mb-4 search-autocomplete">
+            <input type="text" class="form-control" name="q" id="q" placeholder="Search your data..." aria-label="Enter search query..." aria-describedby="btn-search">
+            <span class="input-group-append">
+                <button id="btn-search" class="btn btn-outline-primary"><span class="ms-Icon ms-Icon--Search ms-Icon--Search-mirrored"></span></button>
+            </span>
+        </div>*@
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="search-results-title">Document Search Results</h1>
+            <div id="view-switcher" class="btn-group" role="radiogroup" aria-label="Select results view">
+                <button type="button" data-view="list" class="btn btn-outline-primary btn-results-view btn-results-view-list active" title="View results as list">
+                    <span class="ms-Icon ms-Icon--GroupedList"></span>
+                </button>
+                <button id="view-graph-button" type="button" data-view="entitymap" class="btn btn-outline-primary btn-results-view btn-results-view-entitymap" title="View results as entity map">
+                    <span class="ms-Icon ms-Icon--EngineeringGroup"></span>
+                </button>
+
+            </div>
+        </div>
+        <div id="search-results-container">
+            @await Html.PartialAsync("_SearchResults")
+            @await Html.PartialAsync("_EntityMap")
+        </div>
+    </div>
+
+
+</main>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //if (getCookie("showTutorial") !== "false") {
+        //    var modal = document.getElementById("introModal");
+        //    modal.style.display = "block";
+        //}
+
+        //$('#btn-search').click(function (e) {
+        //    Search();
+        //});
+
+        $("#q").focus();
+
+        $('#view-switcher').find('button').click(function () {
+            var view = $(this).data('view');
+            var listBtnElem = document.getElementsByClassName("btn-results-view-list")[0];
+            var emBtnElem = document.getElementsByClassName("btn-results-view-entitymap")[0];
+
+            listBtnElem.classList.remove("active");
+            emBtnElem.classList.remove("active");
+
+            var selectClassName = `btn-results-view-${view}`;
+            var selectElemList = document.getElementsByClassName(selectClassName);
+
+            var selectElem = selectElemList[0];
+
+            selectElem.classList.add("active");
+
+            EntityMapClick(view);
+        });
+
+        GetFacetFilterFiles();
+
+    });
+</script>

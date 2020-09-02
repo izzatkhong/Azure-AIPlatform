@@ -1,0 +1,10 @@
+<svg id="document" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="80" height="80" viewBox="0 0 80 80">
+  <defs>
+    <radialGradient id="radial-gradient" cx="0.5" cy="0.5" r="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#a3fffc"/>
+      <stop offset="1" stop-color="#0c877a"/>
+    </radialGradient>
+  </defs>
+  <rect id="Rectangle_203" data-name="Rectangle 203" width="80" height="80" fill="none"/>
+  <path id="Icon_metro-file-text" data-name="Icon metro-file-text" d="M71.2,19.825a70.85,70.85,0,0,0-6.811-7.789A70.856,70.856,0,0,0,56.6,5.224c-4.029-2.955-5.984-3.3-7.1-3.3H10.749A6.257,6.257,0,0,0,4.5,8.178v67.5a6.257,6.257,0,0,0,6.25,6.25h57.5a6.257,6.257,0,0,0,6.25-6.25V26.928c0-1.12-.342-3.074-3.3-7.1ZM60.856,15.571a68.19,68.19,0,0,1,5.67,6.357H54.5V9.9a68.121,68.121,0,0,1,6.357,5.67ZM69.5,75.678a1.267,1.267,0,0,1-1.25,1.25h-57.5a1.267,1.267,0,0,1-1.25-1.25V8.178a1.267,1.267,0,0,1,1.25-1.25H49.5v17.5a2.5,2.5,0,0,0,2.5,2.5H69.5ZM57,66.928H22a2.5,2.5,0,1,1,0-5H57a2.5,2.5,0,0,1,0,5Zm0-10H22a2.5,2.5,0,1,1,0-5H57a2.5,2.5,0,1,1,0,5Zm0-10H22a2.5,2.5,0,1,1,0-5H57a2.5,2.5,0,1,1,0,5Z" transform="translate(0.501 -1.928)" fill="url(#radial-gradient)"/>
+</svg>

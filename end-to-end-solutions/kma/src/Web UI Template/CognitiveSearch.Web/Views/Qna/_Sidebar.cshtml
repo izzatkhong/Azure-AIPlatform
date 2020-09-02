@@ -1,0 +1,139 @@
+﻿@model CognitiveSearch.Web.Models.SearchViewModel
+
+@{
+    @using System.IO;
+    @using Newtonsoft.Json;
+
+    string folderPath = "wwwroot\\files\\DocumentEntities\\";
+    List<string> fileNames = new List<string>();
+
+    string[] fileEntries = Directory.GetFiles(folderPath);
+    foreach (string fileName in fileEntries)
+    {
+        if (fileName.IndexOf("Petronas_Entities.pdf") == -1) { 
+            fileNames.Add(fileName.Replace(folderPath, ""));
+            fileNames = fileNames.OrderBy(z => z).ToList();
+        }
+           
+    }
+}
+
+<nav class="d-block bg-light sidebar">
+    <div class="sidebar-sticky">
+        @*<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Question</span>
+        </h6>*@
+
+        <select id="qna-picker" style="display:none"></select>
+
+        <div id="qna-picker-customised" class="customised-facet-picker-container" tabindex="0">
+            <div class="customised-facet-picker-placeholder">
+                <p class="customised-facet-picker-placeholder-label">Select a Document</p>
+                <p class="customised-facet-picker-placeholder-text">Default Option</p>
+            </div>
+
+            <div class="customised-facet-picker-list-container">
+                <ul class="customised-facet-picker-list"></ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        //$('#qna').autocomplete({
+        //    source: function (request, response) {
+        //        var q = $('#qna').val();
+        //        // TODO: Add suggestion box under the search box.
+        //        $.ajax({
+        //            type: "GET",
+        //            url: `${mrcApiUrl}&query=${q}`,
+        //            success: function (data) {
+        //                console.log('data', data)
+        //                response(data);
+        //            }
+        //        });
+        //    },
+        //    minLength: 3,
+        //    select: function (event, ui) {
+        //        QnaSearch();
+        //    }
+        //});
+        
+        bindDropdownEvent = function () {
+            //$('#qna-picker').change(function () {
+            //    var selectedFacet = $(this).find(':selected').val();
+            //    DocumentEntitiesSearch(selectedFacet);
+            //});
+
+            $("#qna-picker-customised .customised-facet-picker-placeholder").click(function () {
+                if ($("#qna-picker-customised.customised-facet-picker-container").hasClass("focused")) {
+                    $("#qna-picker-customised.customised-facet-picker-container").removeClass("focused");
+                    $("#qna-picker-customised.customised-facet-picker-container").blur();
+                } else {
+                    $("#qna-picker-customised.customised-facet-picker-container").addClass("focused");
+                    $("#qna-picker-customised.customised-facet-picker-container").focus();
+                }
+            });
+
+
+            $("#qna-picker-customised.customised-facet-picker-container").focus(function () {
+                $("#qna-picker-customised .customised-facet-picker-list-container").show();
+            });
+
+            $("#qna-picker-customised.customised-facet-picker-container").blur(function () {
+                $("#qna-picker-customised.customised-facet-picker-container").removeClass("focused");
+                $("#qna-picker-customised .customised-facet-picker-list-container").hide();
+            });
+        }
+        bindDropdownEvent();
+
+        function GetDocument(doc) {
+            if ($('#qna-picker')[0].options.length === 0) {
+                var $select2 = $('#qna-picker');
+                var $select = $('#qna-picker-customised .customised-facet-picker-list');
+
+                var $selectedList = $('#qna-picker-customised .customised-facet-picker-list-item')
+
+                var data = @Html.Raw(JsonConvert.SerializeObject(fileNames));
+
+                if ($selectedList.length == 0) {
+                    data.forEach(function (f) {
+                        console.log(f);
+                        var opt = document.createElement('option');
+                        opt.innerHTML = f;
+                        $select.append('<li class="customised-facet-picker-list-item ' + (f === doc ? "active" : "") + '" name="' + f + '">' + f + '</li>')
+                        if (f === doc) {
+                            opt.selected = true;
+                            $("#qna-picker-customised .customised-facet-picker-placeholder-text")[0].innerHTML = f;
+                        }
+                        $select2.append(opt);
+                    });
+                }
+
+                $("#qna-picker-customised .customised-facet-picker-list-item").click(function () {
+                    $("#qna-picker-customised .customised-facet-picker-list-item").removeClass("active");
+                    $(this).addClass("active");
+
+                    /*To do after an item is selected*/
+                    var placeholderNameAttr = $(this).attr('name');
+                    var placeholderText = placeholderNameAttr === "keyPhrases" ? "Key Phrases" : placeholderNameAttr;
+
+
+                    $("#qna-picker").val(placeholderNameAttr).trigger('change');
+                    $("#qna-picker-customised .customised-facet-picker-placeholder-text")[0].innerHTML = placeholderText;
+
+                    $("#qna-picker-customised.customised-facet-picker-container").removeClass("focused");
+
+                    $("#qna-picker-customised .customised-facet-picker-list-container").hide();
+
+                    $("#qna-picker-customised.customised-facet-picker-container").blur();
+
+                });
+            }
+        }
+        GetDocument("2009 Angsi D Dev CLO (Final).pdf");
+    });
+</script>

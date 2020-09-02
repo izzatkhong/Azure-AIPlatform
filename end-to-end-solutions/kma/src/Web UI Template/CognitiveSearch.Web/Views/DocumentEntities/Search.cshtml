@@ -1,0 +1,30 @@
+﻿@model CognitiveSearch.Web.Models.SearchViewModel
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<!-- Pass controller data to view -->
+<script>
+    q = @Html.Raw(Json.Serialize(Model.Query));
+    searchId = @Html.Raw(Json.Serialize(Model.SearchId));
+    applicationInstrumentationKey = @Html.Raw(Json.Serialize(Model.AppConfig.AppInsights.InstrumentationKey));
+
+
+</script>
+
+@await Html.PartialAsync("_SideBar", Model)
+@await Html.PartialAsync("_FacetSettings")
+
+<main role="main">
+    <div id="search-results">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="search-results-title">Document Entities</h1>
+        </div>
+        <div id="search-results-container">
+            @await Html.PartialAsync("_SearchResults")
+            @await Html.PartialAsync("_EntityMap")
+        </div>
+    </div>
+
+
+</main>

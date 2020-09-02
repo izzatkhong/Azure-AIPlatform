@@ -1,0 +1,141 @@
+﻿@{
+    @using System.IO;
+    @using Newtonsoft.Json;
+
+    string folderPath = "wwwroot\\files\\DocumentEntities\\";
+    List<string> fileNames = new List<string>();
+
+    string[] fileEntries = Directory.GetFiles(folderPath);
+    foreach (string fileName in fileEntries)
+    {
+        if (fileName.IndexOf("Petronas_Entities.pdf") == -1)
+        {
+            fileNames.Add(fileName.Replace(folderPath, ""));
+            fileNames = fileNames.OrderBy(z => z).ToList();
+        }
+    }
+
+    fileNames.Insert(0, "Petronas_Entities.pdf");
+}
+
+<nav class="d-block bg-light sidebar">
+    <div class="sidebar-sticky">
+        @*<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>Document List</span>
+            </h6>*@
+        @*<div class="document-list">
+                <ul style="list-style-type:none">
+                    @foreach (string name in fileNames)
+                    {
+                        <li onclick="documentEntities('@name');">@name</li>
+                    }
+                </ul>
+            </div>*@
+        <select id="document-picker" style="display:none"></select>
+
+        <div id="document-picker-customised" class="customised-facet-picker-container" tabindex="0">
+            <div class="customised-facet-picker-placeholder">
+                <p class="customised-facet-picker-placeholder-label">Select a Document</p>
+                <p class="customised-facet-picker-placeholder-text">Default Option</p>
+            </div>
+
+            <div class="customised-facet-picker-list-container">
+                <ul class="customised-facet-picker-list"></ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        var defaultDoc = "Petronas_Entities.pdf";
+
+        if (urlParams.has('document')) {
+            defaultDoc = urlParams.get('document');
+            console.log('document', urlParams.get('document'))
+        }
+
+        $("#doc-count-entities").html(`${@fileNames.Count} Document${@fileNames.Count > 1 ? "s" : ""} Found.`);
+
+        documentEntities = function (fileName) {
+            DocumentEntitiesSearch(fileName);
+        }
+
+        bindDropdownEvent = function () {
+            $('#document-picker').change(function () {
+                var selectedFacet = $(this).find(':selected').val();
+                console.log("selectedFacet",selectedFacet)
+                DocumentEntitiesSearch(selectedFacet);
+            });
+
+            $("#document-picker-customised .customised-facet-picker-placeholder").click(function () {
+                if ($("#document-picker-customised.customised-facet-picker-container").hasClass("focused")) {
+                    $("#document-picker-customised.customised-facet-picker-container").removeClass("focused");
+                    $("#document-picker-customised.customised-facet-picker-container").blur();
+                } else {
+                    $("#document-picker-customised.customised-facet-picker-container").addClass("focused");
+                    $("#document-picker-customised.customised-facet-picker-container").focus();
+                }
+            });
+
+
+            $("#document-picker-customised.customised-facet-picker-container").focus(function () {
+                $("#document-picker-customised .customised-facet-picker-list-container").show();
+            });
+
+            $("#document-picker-customised.customised-facet-picker-container").blur(function () {
+                $("#document-picker-customised.customised-facet-picker-container").removeClass("focused");
+                $("#document-picker-customised .customised-facet-picker-list-container").hide();
+            });
+        }
+        bindDropdownEvent();
+
+        function GetDocument(doc) {
+            if ($('#document-picker')[0].options.length === 0) {
+                var $select2 = $('#document-picker');
+                var $select = $('#document-picker-customised .customised-facet-picker-list');
+
+                var $selectedList = $('#document-picker-customised .customised-facet-picker-list-item')
+
+                var data = @Html.Raw(JsonConvert.SerializeObject(fileNames));
+
+                if ($selectedList.length == 0) {
+                    data.forEach(function (f) {
+                        console.log(f);
+                        var opt = document.createElement('option');
+                        opt.innerHTML = f;
+                        $select.append('<li class="customised-facet-picker-list-item ' + (f === doc ? "active" : "") + '" name="' + f + '">' + f + '</li>')
+                        if (f === doc) {
+                            opt.selected = true;
+                            $("#document-picker-customised .customised-facet-picker-placeholder-text")[0].innerHTML = f;
+                        }
+                        $select2.append(opt);
+                    });
+                }
+
+                $("#document-picker-customised .customised-facet-picker-list-item").click(function () {
+                    $("#document-picker-customised .customised-facet-picker-list-item").removeClass("active");
+                    $(this).addClass("active");
+
+                    /*To do after an item is selected*/
+                    var placeholderNameAttr = $(this).attr('name');
+                    var placeholderText = placeholderNameAttr === "keyPhrases" ? "Key Phrases" : placeholderNameAttr;
+
+
+                    $("#document-picker").val(placeholderNameAttr).trigger('change');
+                    $("#document-picker-customised .customised-facet-picker-placeholder-text")[0].innerHTML = placeholderText;
+
+                    $("#document-picker-customised.customised-facet-picker-container").removeClass("focused");
+
+                    $("#document-picker-customised .customised-facet-picker-list-container").hide();
+
+                    $("#document-picker-customised.customised-facet-picker-container").blur();
+
+                });
+            }
+        }
+        GetDocument(defaultDoc);
+        DocumentEntitiesSearch(defaultDoc);
+    });
+</script>

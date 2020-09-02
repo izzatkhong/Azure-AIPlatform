@@ -1,0 +1,60 @@
+﻿@model CognitiveSearch.Web.Models.SearchViewModel
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<!-- Pass controller data to view -->
+<script>
+    q = @Html.Raw(Json.Serialize(Model.Query));
+    searchId = @Html.Raw(Json.Serialize(Model.SearchId));
+    applicationInstrumentationKey = @Html.Raw(Json.Serialize(Model.AppConfig.AppInsights.InstrumentationKey));
+
+
+</script>
+
+@await Html.PartialAsync("_SideBar", Model)
+@await Html.PartialAsync("_FacetSettings")
+
+<main role="main">
+    <div id="search-results">
+        <div id="search-input-group" class="inputWithIcon">
+            <input type="text" class="form-control" name="qna" id="qna" placeholder="Ask your question here..." aria-label="Enter search query..." aria-describedby="btn-search">
+            <i aria-hidden="true"></i>
+        </div>
+        @*<div id="search-input-group" class="input-group search-autocomplete">
+            <span class="ms-Icon ms-Icon--Search ms-Icon--Search-mirrored">
+                <button id="btn-search" class="btn btn-outline-primary"><span class="ms-Icon ms-Icon--Search ms-Icon--Search-mirrored"></span></button>
+            </span>
+            <input type="text" class="form-control" name="qna" id="qna" placeholder="Search your data..." aria-label="Enter search query..." aria-describedby="btn-search">
+        </div>*@
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="search-results-title">Machine Reading Comprehension Search Results</h1>
+        </div>
+        <div id="search-results-container">
+            @await Html.PartialAsync("_SearchResults")
+            @await Html.PartialAsync("_EntityMap")
+        </div>
+    </div>
+
+
+</main>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var urlParams = new URLSearchParams(window.location.search);
+
+        if (urlParams.has('query')) {
+            $("#qna").val(urlParams.get('query'));
+            QnaSearch();
+        }
+
+        $("#qna").focus();
+        
+        $('#btn-search').click(function (e) {
+            QnaSearch();
+        });
+
+    });
+</script>

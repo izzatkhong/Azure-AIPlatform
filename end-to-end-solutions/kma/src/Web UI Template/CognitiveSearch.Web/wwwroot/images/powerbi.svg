@@ -1,0 +1,10 @@
+<svg id="power_bi" data-name="power bi" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="80" height="80" viewBox="0 0 80 80">
+  <defs>
+    <radialGradient id="radial-gradient" cx="0.5" cy="0.5" r="0.5" gradientTransform="translate(0 0)" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#9cede0"/>
+      <stop offset="1" stop-color="#00a19c"/>
+    </radialGradient>
+  </defs>
+  <rect id="Rectangle_200" data-name="Rectangle 200" width="80" height="80" fill="none"/>
+  <path id="Power_BI-2" data-name="Power BI" d="M56.14,65.509V30.472a4.491,4.491,0,0,1,8.983,0V65.509a4.491,4.491,0,0,1-8.983,0Zm-13.754,0V47.3a4.491,4.491,0,1,1,8.982,0V65.509a4.491,4.491,0,0,1-8.982,0Zm-13.193,0V40.566a4.491,4.491,0,1,1,8.982,0V65.509a4.491,4.491,0,0,1-8.982,0Zm-13.755,0v-9.8a4.491,4.491,0,0,1,8.983,0v9.8a4.491,4.491,0,0,1-8.983,0ZM68.772,47.083s3.892-1.417,5.252-3.777a12.355,12.355,0,0,0,1.221-5.729V13.45S74.992,9.432,72.8,7.483a12.145,12.145,0,0,0-5.553-2.435H13.316a10.125,10.125,0,0,0-6.027,2.47A7.657,7.657,0,0,0,4.9,12.727V39.313a9.056,9.056,0,0,0,2,5.049c1.829,1.942,5.312,2.721,5.312,2.721V52.15h-.982A11.222,11.222,0,0,1,0,40.935V11.215A11.222,11.222,0,0,1,11.228,0H68.772A11.221,11.221,0,0,1,80,11.215v29.72A11.221,11.221,0,0,1,68.772,52.15Z" transform="translate(0 5)" fill="url(#radial-gradient)"/>
+</svg>

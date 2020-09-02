@@ -1,0 +1,154 @@
+﻿@{
+    @using System.IO;
+    @using Newtonsoft.Json;
+
+    string folderPath = "wwwroot\\files\\DocumentEntities\\";
+    List<string> fileNames = new List<string>();
+
+    string[] fileEntries = Directory.GetFiles(folderPath);
+    foreach (string fileName in fileEntries)
+    {
+        if (fileName.IndexOf("Petronas_Entities.pdf") == -1)
+        {
+            fileNames.Add(fileName.Replace(folderPath, ""));
+            fileNames = fileNames.OrderBy(z => z).ToList();
+        }
+    }
+
+    fileNames.Insert(0, "Petronas_Entities.pdf");
+}
+
+<head>
+    <script type="text/javascript" src="~/js/powerbi.js"></script>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+</head>
+<main role="main" class="landing-page">
+
+    <div class="landing-page-content">
+        <div class="row custom-widget">
+            <div class="col personalize-widget">
+                <div class="title">Personalize Widget</div>
+            </div>
+
+            <div class="col col-middle" href="/DocumentEntities">
+                <div class="title">Entities Interest</div>
+                <div class="entities-interest">
+                    @for (var i = 0; i < fileNames.Count; i++)
+                    {
+                        <a class="entities-interest-row" href="/DocumentEntities?document=@fileNames[i]">
+                            <i class="ms-Icon ms-Icon--PDF"></i>@fileNames[i]
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <a class="col region-interest" href="/Search?query=Sarawak">
+                <div class="title">Region Interest - Sarawak</div>
+                <div class="region-interest-table-container">
+                    <div class="region-interest-table">
+                        <div class="region-interest-table-row region-interest-table-header">
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>Code</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>Project</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>No. of Fields</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>Owner</div></div></div>
+                        </div>
+
+                        <div class="region-interest-table-row">
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>KA010US</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>D21 Redevelopment</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>1</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>SKO</div></div></div>
+                        </div>
+
+                        <div class="region-interest-table-row">
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>KA019US</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>Greater D18 (Infill) </div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>1</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>PED</div></div></div>
+                        </div>
+
+                        <div class="region-interest-table-row">
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>KA020US</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>J4</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>1</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>SKO</div></div></div>
+                        </div>
+
+                        <div class="region-interest-table-row">
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>KA021US</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>Kasawai Gas Development</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>1</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>PED</div></div></div>
+                        </div>
+
+                        <div class="region-interest-table-row">
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>KA022US</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>Kayu Manis South East & Anjung Kecil</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>2</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>DD</div></div></div>
+                        </div>
+
+                        <div class="region-interest-table-row">
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>KA025US</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>Kumang Cluster 1</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>1</div></div></div>
+                            <div class="region-interest-table-column"><div class="region-interest-table-cell-container"><div>SKO</div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="row features">
+            <a class="col factoid" href="/FactoidSearch">
+                <div class="background after-hover"></div>
+                <div class="background before-hover"></div>
+
+                <img class="icon" src="~/images/powerbi.svg" />
+                <div class="features-text">Question and Answer</div>
+            </a>
+
+            <a class="col col-middle qna" href="/Search">
+                <div class="background after-hover"></div>
+                <div class="background before-hover"></div>
+
+                <img class="icon" src="~/images/graph.svg" />
+                <div class="features-text">Document Search</div>
+            </a>
+
+            <a class="col machine" href="/Qna">
+                <div class="background after-hover"></div>
+                <div class="background before-hover"></div>
+
+                <img class="icon" src="~/images/robot.svg" />
+                <div class="features-text">Machine Reading Comprehension</div>
+            </a>
+        </div>
+        <div class="row features">
+            <a class="col entities" href="/DocumentEntities">
+                <div class="background after-hover"></div>
+                <div class="background before-hover"></div>
+
+                <img class="icon" src="~/images/document.svg" />
+                <div class="features-text">Document Entities</div>
+            </a>
+
+            <a class="col col-middle image" href="/Image">
+                <div class="background after-hover"></div>
+                <div class="background before-hover"></div>
+
+                <img class="icon" src="~/images/image.svg" />
+                <div class="features-text">Image Search</div>
+            </a>
+
+            <a class="col audio" href="/Search?query=videos of spill">
+                <div class="background after-hover"></div>
+                <div class="background before-hover"></div>
+
+                <img class="icon" src="~/images/videoaudio.svg" />
+                <div class="features-text">Video / Audio Search</div>
+            </a>
+        </div>
+    </div>
+
+</main>
